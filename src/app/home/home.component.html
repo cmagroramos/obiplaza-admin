@@ -1,0 +1,351 @@
+<div class="container-fluid" *ngIf="datos">
+    <h1>{{datos.storeName}}</h1>
+
+    <p-toolbar>
+        <div class="ui-toolbar-group-left">
+            <button pButton type="button" label="Guardar" pTooltip="Guardar los cambios" icon="pi pi-save" class="ui-button-success" [disabled]="formularioCliente.invalid " (click)="guardar()"></button>
+        </div>
+
+        <div class="ui-toolbar-group-right">
+            <!-- <button pButton type="button" icon="pi pi-search"></button>
+            <button pButton type="button" icon="pi pi-calendar" class="ui-button-success"></button> -->
+            <p-message severity="warn" *ngIf="cambios" text="Recuerda guardar cambios"></p-message>
+        </div>
+    </p-toolbar>
+
+    <form [formGroup]="formularioCliente" action="">
+
+        <p-tabView>
+            <p-tabPanel header="Datos" rightIcon="pi pi-id-card">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="">Nombre</label>
+                            <input type="text" class="form-control" formControlName="storeName" placeholder="Agregue el nombre">
+                            <div *ngIf="formularioCliente.controls['storeName'].invalid && formularioCliente.controls['storeName'].dirty" class="alert alert-danger" role="alert">
+                                <span *ngIf="formularioCliente.controls['storeName'].errors.required">  Dirección es requerido</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <label for="">Dirección</label>
+                            <input type="text" class="form-control" formControlName="address" placeholder="Agregue el nombre">
+                            <div *ngIf="formularioCliente.controls['address'].invalid && formularioCliente.controls['address'].dirty" class="alert alert-danger" role="alert">
+                                <span *ngIf="formularioCliente.controls['address'].errors.required">  Dirección es requerido</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="">Correo</label>
+                            <input type="text" class="form-control" formControlName="email" placeholder="Agregue un correo">
+                            <div *ngIf="formularioCliente.controls['email'].invalid && formularioCliente.controls['email'].dirty" class="alert alert-danger" role="alert">
+                                <span *ngIf="formularioCliente.controls['correo'].errors.required">  Correo es requerido</span>
+                                <span *ngIf="formularioCliente.controls['correo'].errors.email">Correo no es valido</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="">Texto Botón Inicio</label>
+                            <input type="text" class="form-control" formControlName="welcomeButtonText" placeholder="Texto botón bienvenida">
+                            <div *ngIf="formularioCliente.controls['welcomeButtonText'].invalid && formularioCliente.controls['welcomeButtonText'].dirty" class="alert alert-danger" role="alert">
+                                <span *ngIf="formularioCliente.controls['welcomeButtonText'].errors.required">  El texto es requerido</span>
+                                <span *ngIf="formularioCliente.controls['welcomeButtonTextwelcomeButtonText'].errors.email">El texto es requerido</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="">Parametro Correo (Ojo consutar!)</label>
+                            <input type="text" class="form-control" formControlName="parametroCorreo" placeholder="Ojo consultar valor!">
+                            <div *ngIf="formularioCliente.controls['welcomeButtonText'].invalid && formularioCliente.controls['welcomeButtonText'].dirty" class="alert alert-danger" role="alert">
+                                <span *ngIf="formularioCliente.controls['welcomeButtonText'].errors.required">  El texto es requerido</span>
+                                <span *ngIf="formularioCliente.controls['welcomeButtonTextwelcomeButtonText'].errors.email">El texto es requerido</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="">Descripción</label>
+
+                            <textarea class="form-control rounded-0" type="text" formControlName="desc" rows="5" placeholder="Datos del local"></textarea>
+                            <div *ngIf="formularioCliente.controls['desc'].invalid && formularioCliente.controls['desc'].dirty" class="alert alert-danger" role="alert">
+                                <span *ngIf="formularioCliente.controls['desc'].errors.required">  Descripción es requerido</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Redes sociales" rightIcon="pi pi-globe">
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="">Facebook</label>
+                            <input type="text" class="form-control" formControlName="facebookPage" placeholder="PAgina de Facebook">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="">Instagram</label>
+                            <input type="text" class="form-control" formControlName="instagramPage" placeholder="Pagina de Instagram">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="">Twiter</label>
+                            <input type="text" class="form-control" formControlName="twitterPage" placeholder="Pagina de Twitter">
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="">Teléfono</label>
+                            <input type="tel" class="form-control" formControlName="phoneNumber" placeholder="Agregue un telefono">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="">Url Corta PWA</label>
+                            <input type="tel" class="form-control" formControlName="urlRedir" placeholder="Url Corta">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="">Mapa</label>
+                            <input type="string" class="form-control" formControlName="officeLocation" placeholder="Situación">
+                        </div>
+                    </div>
+                </div>
+
+            </p-tabPanel>
+            <p-tabPanel header="Imágenes" rightIcon="pi pi-images">
+                <div class="row ">
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <img [src]="formularioCliente.get('logo').value" class="card-img-top" style="max-width: 100px; max-height: 100px;" alt="el logo">
+                            <div class="card-body">
+                                <h5 class="card-title">Logo</h5>
+                            </div>
+                            <p class="card-text">
+                                <input type="file" (change)="subirImagenLogo($event)" accept=".png,.jpg" />
+                            </p>
+                            <p class="card-text">
+                                <progress max="100" [value]="porcentajeSubida"></progress>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <img [src]="formularioCliente.get('welcomeImages').value" class="card-img-top" style="max-width: 100px; max-height: 100px;" alt="welcome">
+                            <div class="card-body">
+                                <h5 class="card-title">Bienvenida</h5>
+                                <p class="card-text">
+                                    <input type="file" (change)="subirImagen($event)" accept=".png,.jpg" />
+                                </p>
+                                <p class="card-text">
+                                    <progress max="100" [value]="porcentajeSubida"></progress>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </p-tabPanel>
+            <p-tabPanel header="Horarios" rightIcon="pi pi-clock">
+                <div class="container-fluid">
+
+                    <div formArrayName="horario">
+
+                        <table class="table table-striped">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Dia</th>
+                                    <th scope="col">Abierto</th>
+                                    <th scope="col">Desde</th>
+                                    <th scope="col">Hasta</th>
+                                    <th scope="col">Desde</th>
+                                    <th scope="col">Hasta</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr *ngFor="let hora of horario.controls; let i=index" [formGroupName]="i">
+                                    <td>
+                                        <input type="string" class="form-control" formControlName="dia" placeholder="Dia">
+                                    </td>
+                                    <td class="align-content-center">
+                                        <!-- <input type="checkbox" class="form-check-input" formControlName="abierto"> -->
+                                        <p-checkbox pTooltip="Abrimos?" formControlName="abierto" inputId="abierto" [binary]="true"></p-checkbox>
+                                    </td>
+                                    <td>
+                                        <!-- <input type="string" class="form-control" formControlName="desdeManana" placeholder="Hora"> -->
+                                        <p-inputMask type="string" formControlName="desdeManana" mask="99:99" placeholder="Hora"></p-inputMask>
+                                    </td>
+                                    <td>
+                                        <!-- <input type="string" class="form-control" formControlName="hastaManana" placeholder="Hora"> -->
+                                        <p-inputMask type="string" formControlName="hastaManana" mask="99:99" placeholder="Hora"></p-inputMask>
+                                    </td>
+                                    <td>
+                                        <!-- <input type="string" class="form-control" formControlName="desdeTarde" placeholder="Hora"> -->
+                                        <p-inputMask type="string" formControlName="desdeTarde" mask="99:99" placeholder="Hora"></p-inputMask>
+                                    </td>
+                                    <td>
+                                        <p-inputMask type="string" formControlName="hastaTarde" mask="99:99" placeholder="Hora"></p-inputMask>
+                                        <!-- <input type="string" class="form-control" formControlName="hastaTarde" placeholder="Hora"> -->
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <p></p>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Pedidos" rightIcon="pi pi-shopping-cart">
+                <div class="container-fluid">
+                    <p></p>
+                    <div formArrayName="pedidos">
+
+                        <table class="table table-striped">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Título</th>
+                                    <th scope="col">Subtítulo</th>
+                                    <th scope="col">URL</th>
+                                    <th scope="col">Icono</th>
+                                    <th scope="col">Mínimo</th>
+                                    <th scope="col">Envío</th>
+                                    <th scope="col">EnvíoGratis</th>
+                                    <th scope="col">Activo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr *ngFor="let compra of pedidos.controls; let i=index" [formGroupName]="i">
+
+                                    <td>
+                                        <input type="string" class="form-control" formControlName="titulo" placeholder="Título">
+                                    </td>
+                                    <td>
+                                        <input type="string" class="form-control" formControlName="subtitulo" placeholder="Subtitulo">
+                                    </td>
+                                    <td>
+                                        <input type="string" class="form-control" formControlName="url" placeholder="URL">
+                                    </td>
+                                    <td>
+                                        <input type="string" class="form-control" formControlName="icon" placeholder="URL">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" formControlName="pedidoMinimo">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" formControlName="gastosEnvio">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" formControlName="envioGratis">
+                                    </td>
+                                    <td>
+                                        <p-checkbox pTooltip="Activo en App?" formControlName="activo" inputId="activo" [binary]="true"></p-checkbox>
+                                        <!-- <input type="checkbox" class="form-check-input" formControlName="activo"> -->
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <p></p>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Horario Entregas" rightIcon="pi pi-calendar">
+                <div class="container-fluid">
+
+                    <div formArrayName="horarioEntregas">
+
+                        <table class="table table-striped">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Dia</th>
+                                    <th scope="col">Abierto</th>
+                                    <th scope="col">Desde</th>
+                                    <th scope="col">Hasta</th>
+                                    <th scope="col">Desde</th>
+                                    <th scope="col">Hasta</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr *ngFor="let hora of horario.controls; let i=index" [formGroupName]="i">
+                                    <td>
+                                        <input type="string" class="form-control" formControlName="dia" placeholder="Dia">
+                                    </td>
+                                    <td class="align-content-center">
+                                        <!-- <input type="checkbox" class="form-check-input" formControlName="abierto"> -->
+                                        <p-checkbox pTooltip="Entregamos?" formControlName="abierto" inputId="abierto" [binary]="true"></p-checkbox>
+                                    </td>
+                                    <td>
+                                        <!-- <input type="string" class="form-control" formControlName="desdeManana" placeholder="Hora"> -->
+                                        <p-inputMask type="string" formControlName="desdeManana" mask="99:99" placeholder="Hora"></p-inputMask>
+                                    </td>
+                                    <td>
+                                        <!-- <input type="string" class="form-control" formControlName="hastaManana" placeholder="Hora"> -->
+                                        <p-inputMask type="string" formControlName="hastaManana" mask="99:99" placeholder="Hora"></p-inputMask>
+                                    </td>
+                                    <td>
+                                        <!-- <input type="string" class="form-control" formControlName="desdeTarde" placeholder="Hora"> -->
+                                        <p-inputMask type="string" formControlName="desdeTarde" mask="99:99" placeholder="Hora"></p-inputMask>
+                                    </td>
+                                    <td>
+                                        <p-inputMask type="string" formControlName="hastaTarde" mask="99:99" placeholder="Hora"></p-inputMask>
+                                        <!-- <input type="string" class="form-control" formControlName="hastaTarde" placeholder="Hora"> -->
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <p></p>
+                    Añadir poblaciones de entrega
+
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Recomendaciones" rightIcon="pi pi-star-o">
+                <p-toolbar>
+                    <div class="ui-toolbar-group-left">
+                        <button pButton type="button" label="Guardar Orden" pTooltip="Guardar orden" icon="pi pi-save" class="ui-button-primary" [disabled]="formularioCliente.invalid " (click)="guardarOrdenRecomendaciones()"></button>
+                    </div>
+
+                    <div class="ui-toolbar-group-right">
+                        <!-- <button pButton type="button" icon="pi pi-search"></button>
+                        <button pButton type="button" icon="pi pi-calendar" class="ui-button-success"></button> -->
+                        <p-message severity="warn" *ngIf="cambiosOrdenListaRecomendaciones" text="Recuerda guardar cambios"></p-message>
+                    </div>
+                </p-toolbar>
+                <p-orderList [value]="recomendaciones" (onReorder)="cambioListaRecomendaciones()">
+                    <ng-template let-recomendaciones pTemplate="item">
+                        <div class="ui-helper-clearfix">
+                            <div style="font-size:14px;float:left;margin:15px 5px 0 0">{{recomendaciones.title}}</div>
+                            <!-- <img [src]="recomendaciones.thumb" style="display:inline-block;margin:2px 0 2px 2px" width="48"> -->
+                        </div>
+                    </ng-template>
+                </p-orderList>
+                <!-- <pre>{{recomendaciones | json}}</pre> -->
+            </p-tabPanel>
+        </p-tabView>
+
+        <!-- <h1>Welcome Image<img *ngIf="datos" [src]="datos.welcomeImages[0]" width="100px"></h1> -->
+
+    </form>
+
+    <!-- <pre>{{this.formularioCliente?.value | json}}</pre> -->
+</div>

@@ -1,0 +1,35 @@
+<div class="container-fluid">
+
+    <p-toolbar>
+        <div class="ui-toolbar-group-right">
+            <app-search (value)="valorBusqueda($event)"></app-search>
+        </div>
+    </p-toolbar>
+
+    <h1>Productos</h1>
+
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Plato</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr *ngFor="let plato of platos">
+                <td>({{plato.orden}})</td>
+                <td>
+                    {{ plato.title }}
+                </td>
+                <td>
+                    <button (click)="verPlato(plato.$key)" type="button" class="btn btn-secondary">Ver</button>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+</div>

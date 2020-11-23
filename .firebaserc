@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "obiplaza-dedoclic": {
+      "hosting": {
+        "admin": [
+          "obiplaza-dedoclic-admin"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "obiplaza-dedoclic"
+  }
+}

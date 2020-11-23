@@ -1,0 +1,25 @@
+<p-dropdown [options]="cartas" optionLabel="label" [filter]="true" (selected)="onSelectedCategoria($event)" [showClear]="true" placeholder="Selecciona carta ...">
+    <ng-template pTemplate="selectedCarta">
+        <div *ngIf="selectedCarta">
+            <div>{{selectedCarta.label}}</div>
+        </div>
+    </ng-template>
+    <ng-template let-carta pTemplate="carta">
+        <div>
+            <div>{{carta.label}}</div>
+        </div>
+    </ng-template>
+</p-dropdown>
+
+<!-- <p-dropdown [options]="countries" [(ngModel)]="selectedCountry" optionLabel="name" [filter]="true" [showClear]="true" placeholder="Select a Country">
+    <ng-template pTemplate="selectedItem">
+        <div class="country-item country-item-value"  *ngIf="selectedCountry">
+            <div>{{selectedCountry.name}}</div>
+        </div>
+    </ng-template>
+    <ng-template let-country pTemplate="item">
+        <div class="country-item">
+            <div>{{country.value.name}}</div>
+        </div>
+    </ng-template>
+</p-dropdown> -->

@@ -1,0 +1,24 @@
+<div class="container-fluid">
+    <h1>Cartas</h1>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Carta</th>
+                <th scope="col">Acciones</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let carta of cartas">
+                <td>
+                    {{ carta.title }}
+                </td>
+                <td>
+                    <button (click)="verCarta(carta.$key)" type="button" class="btn btn-primary">Info</button>
+                    <!-- <button (click)="verGrupos(carta.$key)" type="button" class="btn btn-secondary">Grupos</button> -->
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

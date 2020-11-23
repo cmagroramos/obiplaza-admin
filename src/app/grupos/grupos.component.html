@@ -1,0 +1,44 @@
+<div class="container-fluid">
+    <h1>Grupos</h1>
+    <!-- <div class="form-check" *ngFor="let entry of entries">
+        <span>
+            <input class="form-check-input" type="radio" name="exampleRadios" [value]="entry.value" (change)="onSelectionChange(entry)">
+            <label class="form-check-label">
+                {{ entry.label }}
+            </label>
+        </span>
+    </div> -->
+
+
+    <div class="p-formgroup-inline">
+        <div class="p-field-checkbox" *ngFor="let entry of entries">
+            <p-radioButton name="groupname" [value]="entry.value" (onClick)="onSelectionChange(entry)"></p-radioButton>
+            <label>{{ entry.label }}</label>
+        </div>
+    </div>
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Grupo</th>
+                <th scope="col">Acciones</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let grupo of grupos">
+                <!-- <td><input type="number" [value]="grupo.orden" class="form-control" #order (change)="actualiza(order.value, grupo.$key)"></td> -->
+                <td>({{grupo.orden}})</td>
+                <td>
+                    {{ grupo.title }}
+                </td>
+                <td>
+                    <button (click)="verGrupo(grupo.$key)" type="button" class="btn btn-primary">Info</button>
+                    <!-- <button (click)="verProductosGrupo(grupo.$key)" type="button" class="btn btn-secondary">Productos</button> -->
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

@@ -1,0 +1,21 @@
+<div class="sectionDiv">
+    <h1>Settings</h1>
+
+    <br/><br/>
+
+
+    <progress max="100" [value]="(firestorage.uploadProgress | async)"></progress>
+
+    <br/><br/>
+
+    <div class="result" *ngIf="firestorage.downloadURL | async; let url">
+        <img [src]="url" width="200">
+    </div>
+
+
+    <br/><br/>
+
+    <label for="file">Imagen:</label>
+    <input type="file" (change)="firestorage.upload($event, null, null)" accept=".png,.jpg" />
+
+</div>

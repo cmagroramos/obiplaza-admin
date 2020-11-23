@@ -1,0 +1,274 @@
+<div class="container-fluid" *ngIf="formularioPlato">
+
+    <p-toolbar>
+        <div class="ui-toolbar-group-left">
+            <button pButton type="button" label="Guardar" icon="pi pi-save" class="ui-button-success" [disabled]="formularioPlato.invalid" (click)="guardar()"></button>
+            <button pButton type="button" label="Borrar" icon="pi pi-trash" class="ui-button-danger" [disabled]="formularioPlato.get('$key').value === ''" (click)="borrarPlato()"></button>
+            <button pButton type="button" label="Duplicar" icon="pi pi-clone" class="ui-button-info" [disabled]="formularioPlato.get('$key').value === ''" (click)="duplicarPlato()"></button>
+        </div>
+
+        <div class="ui-toolbar-group-right">
+            <!-- <button pButton type="button" icon="pi pi-search"></button>
+            <button pButton type="button" icon="pi pi-calendar" class="ui-button-success"></button> -->
+            <p-message severity="warn" *ngIf="cambios" text="Recuerda guardar cambios"></p-message>
+        </div>
+    </p-toolbar>
+    <h2>{{nombre}}</h2>
+    <form [formGroup]="formularioPlato" class="form-group">
+
+        <p-tabView>
+            <p-tabPanel header="Datos" rightIcon="pi pi-info-circle">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="">Nombre</label>
+                            <input type="text" class="form-control" formControlName="title" placeholder="Agregue el nombre">
+                            <div *ngIf="formularioPlato.controls['title'].invalid && formularioPlato.controls['title'].dirty" class="alert alert-danger" role="alert">
+                                <span *ngIf="formularioPlato.controls['title'].errors.required">  Nombre es requerido</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <label for="">Descripción</label>
+                            <input type="text" class="form-control" formControlName="body" placeholder="Agregue la descripción">
+                            <div *ngIf="formularioPlato.controls['body'].invalid && formularioPlato.controls['body'].dirty" class="alert alert-danger" role="alert">
+                                <span *ngIf="formularioPlato.controls['body'].errors.required">  Descripción es requerido</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="">Grupo</label>
+                            <app-select-category formControlName="category"></app-select-category>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="">Orden</label>
+                        <input type="text" class="form-control" formControlName="orden" placeholder="Orden dentro del grupo">
+                    </div>
+                </div>
+
+
+
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <p-checkbox pTooltip="Se muestra en la pantalla de inicio de la app" [formControl]="formularioPlato.controls['isFeatured']" inputId="featured" [binary]="true"></p-checkbox>
+                        <label for="featured">Recomendado</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <p-checkbox pTooltip="Para mostrar o no el producto" [formControl]="formularioPlato.controls['activo']" inputId="activo" [binary]="true"></p-checkbox>
+                        <label for="activo">Activo</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <p-checkbox pTooltip="Permite añadirlo al carrito" [formControl]="formularioPlato.controls['compraOnline']" inputId="online" [binary]="true"></p-checkbox>
+                        <label for="online">Online</label>
+                    </div>
+                </div>
+
+
+
+
+
+            </p-tabPanel>
+            <p-tabPanel header="Imágenes" rightIcon="pi pi-images">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="card">
+                            <img [src]="formularioPlato.get('thumb').value" class="card-img-top" style="max-width: 100px; max-height: 100px;text-align: center;" alt="el logo">
+                            <div class="card-body">
+                                <h5 class="card-title">Imagen</h5>
+                            </div>
+                            <p class="card-text">
+
+                                <input type="file" class="btn btn-primary" (change)="subirImagenLogo($event)" accept=".png,.jpg" />
+                            </p>
+                            <p class="card-text">
+                                <progress max="100" [value]="porcentajeSubida"></progress>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Precios" rightIcon="pi pi-dollar">
+                <div class="container-fluid">
+                    <div formArrayName="price">
+                        <table class="table table-striped">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Importe</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Moneda</th>
+                                    <th scope="col">Acción</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr *ngFor="let price of prices.controls; let i=index" [formGroupName]="i">
+
+                                    <td>
+                                        <input type="string" class="form-control" formControlName="value" placeholder="Nombre">
+                                    </td>
+                                    <td>
+                                        <input type="string" class="form-control" formControlName="name" placeholder="Nombre">
+                                    </td>
+                                    <td>
+                                        <input type="string" class="form-control" formControlName="currency" placeholder="Moneda">
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger" (click)="borrarPrecio(i)">Borrar
+                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                          </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <button class="btn btn-outline-primary" (click)="addNewPriceToModel()">Añade precio</button>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Tags" rightIcon="pi pi-tags">
+
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="">Etiquetas</label>
+                        <tag-input formControlName="tags"></tag-input>
+                    </div>
+                </div>
+
+            </p-tabPanel>
+
+            <p-tabPanel header="Alérgenos" rightIcon="pi pi-bell">
+
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="">Alergenos</label>
+                        <app-select-alergeno formControlName="alergenos"></app-select-alergeno>
+                    </div>
+                </div>
+            </p-tabPanel>
+
+            <p-tabPanel header="Opciones" rightIcon="pi pi-list">
+                <div class="container-fluid">
+                    <br/>
+                    <div class="col-sm-12">
+                        <p-checkbox pTooltip="Para mostrar check o radioButton" [formControl]="formularioPlato.controls['opcionesExcluyentes']" inputId="opcionesExcluyentes" [binary]="true"></p-checkbox>
+                        <label for="opcionesExcluyentes">Marcar para opciones excluyentes</label>
+                    </div>
+                    <br/>
+                    <div formArrayName="standardOptions">
+                        <table class="table table-striped">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Activo</th>
+                                    <th scope="col">Precio</th>
+                                    <th scope="col">Acción</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr *ngFor="let standar of standardOptions.controls; let i=index" [formGroupName]="i">
+
+                                    <td>
+                                        <input type="string" class="form-control" formControlName="name" placeholder="Nombre">
+                                    </td>
+                                    <td>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" formControlName="selected" id="exampleCheck3">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" formControlName="value" placeholder="Precio">
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger" (click)="borrarOpcionStandard(i)">Borrar
+                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                          </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <button class="btn btn-outline-primary" (click)="addNewstandarToModel()">Añade opción</button>
+                </div>
+            </p-tabPanel>
+
+            <p-tabPanel header="Extras" rightIcon="pi pi-star">
+                <div class="container-fluid">
+                    <br/>
+                    <div class="col-sm-12">
+                        <p-checkbox pTooltip="Para mostrar check o radioButton" [formControl]="formularioPlato.controls['opcionesExtrasExcluyentes']" inputId="opcionesExtrasExcluyentes" [binary]="true"></p-checkbox>
+                        <label for="opcionesExcluyentes">Marcar para opciones excluyentes</label>
+                    </div>
+                    <br/>
+                    <div formArrayName="extraOptions">
+                        <table class="table table-striped">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Activo</th>
+                                    <th scope="col">Precio</th>
+                                    <th scope="col">Acción</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr *ngFor="let standar of extraOptions.controls; let i=index" [formGroupName]="i">
+
+                                    <td>
+                                        <input type="string" class="form-control" formControlName="name" placeholder="Nombre">
+                                    </td>
+                                    <td>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" formControlName="selected" id="exampleCheck3">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" formControlName="value" placeholder="Precio">
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger" (click)="borrarOpcionExtra(i)">Borrar
+                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                          </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <button class="btn btn-outline-primary" (click)="addNewextraToModel()">Añade opción</button>
+                </div>
+            </p-tabPanel>
+
+        </p-tabView>
+
+        <!-- <div class="row">
+            <div class="col-sm-4">
+                <button class="btn btn-primary" [disabled]="formularioPlato.invalid " (click)="guardar()">Guardar</button>
+                <button class="btn btn-danger" [disabled]="formularioPlato.get('$key').value === ''" (click)="borrarPlato()">Borrar</button>
+            </div>
+        </div> -->
+
+    </form>
+
+
+    <!-- <pre>{{this.formularioPlato?.value | json}}</pre> -->
+</div>

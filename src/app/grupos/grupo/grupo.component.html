@@ -1,0 +1,152 @@
+<div class="container-fluid" *ngIf="formularioGrupo">
+
+    <p-toolbar>
+        <div class="ui-toolbar-group-left">
+            <button pButton type="button" label="Guardar" icon="pi pi-save" class="ui-button-success" [disabled]="formularioGrupo.invalid " (click)="guardar()"></button>
+            <button pButton type="button" label="Borrar" icon="pi pi-trash" class="ui-button-danger" [disabled]="formularioGrupo.get('$key').value === ''" (click)="borrarGrupo()"></button>
+
+        </div>
+
+        <div class="ui-toolbar-group-right">
+            <!-- <button pButton type="button" icon="pi pi-search"></button>
+            <button pButton type="button" icon="pi pi-calendar" class="ui-button-success"></button> -->
+            <p-message severity="warn" *ngIf="cambios" text="Recuerda guardar cambios"></p-message>
+        </div>
+    </p-toolbar>
+    <p></p>
+    <h3>{{grupo.title}}</h3>
+    <p></p>
+    <form [formGroup]="formularioGrupo">
+
+        <p-tabView>
+            <p-tabPanel header="Datos" rightIcon="pi pi-info-circle">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="">Nombre</label>
+                            <input type="text" class="form-control" formControlName="title" placeholder="Agregue el nombre">
+                            <div *ngIf="formularioGrupo.controls['title'].invalid && formularioGrupo.controls['title'].dirty" class="alert alert-danger" role="alert">
+                                <span *ngIf="formularioGrupo.controls['title'].errors.required">  Nombre es requerido</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="">Descripción</label>
+                            <input type="text" class="form-control" formControlName="desc" placeholder="Agregue la descripción">
+                            <div *ngIf="formularioGrupo.controls['desc'].invalid && formularioGrupo.controls['desc'].dirty" class="alert alert-danger" role="alert">
+                                <span *ngIf="formularioGrupo.controls['desc'].errors.required">  Descripción es requerido</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="">Mostrar en</label>
+                            <app-select-generics formControlName="generics"></app-select-generics>
+                            <!-- <app-carta-select formControlName="generics"></app-carta-select> -->
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="">Orden</label>
+                        <input type="text" class="form-control" formControlName="orden" placeholder="Orden dentro de la carta">
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group form-check">
+                            <!-- <input type="checkbox" class="form-check-input" formControlName="activo" id="exampleCheck1">
+                            <label class="form-check-label" for="exampleCheck1">Activo</label> -->
+
+                            <p-checkbox pTooltip="El producto se muestra en la app" [formControl]="formularioGrupo.controls['activo']" inputId="activo" [binary]="true"></p-checkbox>
+                            <label for="activo">Activo</label>
+                        </div>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Imagen" rightIcon="pi pi-image">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <img [src]="formularioGrupo.get('thumb').value" class="card-img-top" style="max-width: 100px; max-height: 100px;" alt="el logo">
+                            <div class="card-body">
+                                <h5 class="card-title">Imagen</h5>
+                            </div>
+                            <p class="card-text">
+                                <input type="file" (change)="subirImagenLogo($event)" accept=".png,.jpg" />
+                            </p>
+                            <p class="card-text">
+                                <progress max="100" [value]="porcentajeSubida"></progress>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Platos" rightIcon="pi pi-images">
+                <!-- <ul *ngFor="let item of platos">
+                    <li> <a [routerLink]="['/plato/', item.$key]">{{item.title}}</a> </li>
+                </ul> -->
+                <p-carousel [value]="platos" [numVisible]="4" [numScroll]="3" [circular]="false" [responsiveOptions]="responsiveOptions">
+                    <ng-template let-platos pTemplate="item">
+                        <div class="product-item">
+                            <div class="p-grid p-nogutter product-item-content">
+
+                                <div class="p-col-12 ">
+                                    <img [src]="platos.thumb" class="product-image" />
+
+                                    <h6 class="p-mb-1">{{platos.title}}</h6>
+
+
+                                    <div>
+                                        <div class="p-mt-5">
+                                            <p-button type="button" [routerLink]="['/plato/', platos.$key]" styleClass="p-button p-button-rounded  p-mr-2" icon="pi pi-info-circle" pTooltip="Ver detalles" tooltipPosition="bottom"></p-button>
+                                            <p-button type="button" *ngIf="platos.isFeatured" (onClick)="recomendar(platos)" styleClass="p-button-success p-button-rounded p-mr-2 ui-button-success" icon="pi pi-star" pTooltip="Quitar como recomendación" tooltipPosition="bottom"></p-button>
+                                            <p-button type="button" *ngIf="!platos.isFeatured" (onClick)="recomendar(platos)" styleClass="p-button-success p-button-rounded p-mr-2 ui-button-success" icon="pi pi-star-o" pTooltip="Poner como recomendación" tooltipPosition="bottom"></p-button>
+                                            <p-button type="button" *ngIf="platos.compraOnline" (onClick)="venta(platos)" styleClass="p-button-help p-button-rounded ui-button-danger p-mr-2" icon="pi pi-shopping-cart" pTooltip="Desactivar venta Online" tooltipPosition="bottom"></p-button>
+                                            <p-button type="button" *ngIf="!platos.compraOnline" (onClick)="venta(platos)" styleClass="p-button-help p-button-rounded ui-button-danger p-mr-2" icon="pi pi-home" pTooltip="Activar para venta Online" tooltipPosition="bottom"></p-button>
+                                            <p-button type="button" *ngIf="platos.activo" (onClick)="activar(platos)" styleClass="p-button-help p-button-rounded ui-button-warning p-mr-2" icon="pi pi-check-circle" pTooltip="Desactivar" tooltipPosition="bottom"></p-button>
+                                            <p-button type="button" *ngIf="!platos.activo" (onClick)="activar(platos)" styleClass="p-button-help p-button-rounded ui-button-warning p-mr-2" icon="pi pi-times-circle" pTooltip="Activar" tooltipPosition="bottom"></p-button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-carousel>
+
+            </p-tabPanel>
+            <p-tabPanel header="Platos" rightIcon="pi pi-sort-numeric-down">
+                <p-toolbar>
+                    <div class="ui-toolbar-group-left">
+                        <button pButton type="button" label="Guardar Orden" pTooltip="Guardar orden" icon="pi pi-save" class="ui-button-primary" [disabled]="formularioGrupo.invalid " (click)="guardarOrdenPlatos()"></button>
+                    </div>
+
+                    <div class="ui-toolbar-group-right">
+                        <!-- <button pButton type="button" icon="pi pi-search"></button>
+                        <button pButton type="button" icon="pi pi-calendar" class="ui-button-success"></button> -->
+                        <p-message severity="warn" *ngIf="cambiosOrdenListaPlatos" text="Recuerda guardar cambios"></p-message>
+                    </div>
+                </p-toolbar>
+                <p-orderList [value]="platos" (onReorder)="cambioListaPlatos()">
+                    <ng-template let-plato pTemplate="item">
+                        <div class="ui-helper-clearfix">
+                            <div style="font-size:14px;float:left;margin:15px 5px 0 0">({{plato.orden}}){{plato.title}}</div>
+                        </div>
+                    </ng-template>
+                </p-orderList>
+
+            </p-tabPanel>
+        </p-tabView>
+
+
+        <!-- <div class="col-sm-12">
+            <button class="btn btn-primary" [disabled]="formularioGrupo.invalid " (click)="guardar()">Guardar</button>
+            <button class="btn btn-danger" [disabled]="formularioGrupo.get('$key').value === ''" (click)="borrarGrupo()">Borrar</button>
+        </div> -->
+    </form>
+    <!-- <pre>{{this.formularioGrupo?.value | json}}</pre>
+    <pre>{{grupo | json}}</pre> -->
+
+
+
+</div>

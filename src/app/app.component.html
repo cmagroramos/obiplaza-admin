@@ -1,0 +1,26 @@
+<!-- <nav *ngIf="auth.user | async as user; else login" class="navbar navbar-expand-lg navbar-light bg-light"> -->
+<p-menubar [model]="items" *ngIf="auth.user | async as user; else login">
+
+    <div class="userDiv">
+        <button (click)="auth.logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            </button>
+    </div>
+
+</p-menubar>
+
+<ng-template #login>
+    <div class="loginDiv">
+
+        <form class="form">
+            <button class="btn btn-danger" (click)="auth.glogin()">
+        <i class="fab fa-google"></i>
+        Google Login
+      </button>
+
+        </form>
+    </div>
+</ng-template>
+
+<router-outlet *ngIf="auth.user | async as user"></router-outlet>
+<app-footer-component></app-footer-component>

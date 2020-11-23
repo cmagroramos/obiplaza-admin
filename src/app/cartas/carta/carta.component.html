@@ -1,0 +1,144 @@
+<div class="container-fluid" *ngIf="formularioGenerics">
+    <p></p>
+    <h2>{{formularioGenerics.controls['title'].value}}</h2>
+    <form [formGroup]="formularioGenerics">
+
+        <p-panel>
+            <p-header>
+                <p-toolbar>
+                    <div class="ui-toolbar-group-left">
+                        <button pButton type="button" label="Guardar" icon="pi pi-save" class="ui-button-success" [disabled]="formularioGenerics.invalid " (click)="guardar()"></button>
+                    </div>
+
+                    <div class="ui-toolbar-group-right">
+                        <!-- <button pButton type="button" icon="pi pi-search"></button>
+                        <button pButton type="button" icon="pi pi-calendar" class="ui-button-success"></button> -->
+                        <p-message severity="warn" *ngIf="cambios" text="Recuerda guardar cambios"></p-message>
+                    </div>
+                </p-toolbar>
+            </p-header>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="">Nombre</label>
+                        <input type="text" class="form-control" formControlName="title" placeholder="Agregue el nombre">
+                        <div *ngIf="formularioGenerics.controls['title'].invalid && formularioGenerics.controls['title'].dirty" class="alert alert-danger" role="alert">
+                            <span *ngIf="formularioGenerics.controls['title'].errors.required">  Nombre es requerido</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="">Icono</label>
+                        <input type="text" class="form-control" formControlName="icon" placeholder="Agregue el icono">
+                        <div *ngIf="formularioGenerics.controls['icon'].invalid && formularioGenerics.controls['icon'].dirty" class="alert alert-danger" role="alert">
+                            <span *ngIf="formularioGenerics.controls['icon'].errors.required">  Icono es requerido</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="">Url</label>
+                        <input type="text" class="form-control" formControlName="url" placeholder="Agregue la descripción">
+                        <div *ngIf="formularioGenerics.controls['url'].invalid && formularioGenerics.controls['url'].dirty" class="alert alert-danger" role="alert">
+                            <span *ngIf="formularioGenerics.controls['url'].errors.required">Url</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group form-check">
+                        <!-- <input type="checkbox" class="form-check-input" formControlName="grupo" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">Grupo (Marcar si representa una agrupación de productos)</label> -->
+                        <p-checkbox pTooltip="Representa una agrupación de productos?" [formControl]="formularioGenerics.controls['grupo']" inputId="grupo" [binary]="true"></p-checkbox>
+                        <label for="grupo">Es grupo?</label>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group form-check">
+                        <!-- <input type="checkbox" class="form-check-input" formControlName="mostrar" id="exampleCheck2">
+                        <label class="form-check-label" for="exampleCheck2">Mostrar (Marcar para que se muestre en el menú lateral)</label> -->
+                        <p-checkbox pTooltip="Se muestre en el menú lateral de la app?" [formControl]="formularioGenerics.controls['mostrar']" inputId="mostrar" [binary]="true"></p-checkbox>
+                        <label for="mostrar">Mostrar menú lateral?</label>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group form-check">
+                        <!-- <input type="checkbox" class="form-check-input" formControlName="boton" id="exampleCheck3">
+                        <label class="form-check-label" for="exampleCheck3">Botón (Marcar para que se muestre botón en Home)</label> -->
+                        <p-checkbox pTooltip="Marcar para que se muestre botón en Home?" [formControl]="formularioGenerics.controls['boton']" inputId="boton" [binary]="true"></p-checkbox>
+                        <label for="mostrar">Mostrar botón en Home?</label>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group form-check">
+                        <!-- <input type="checkbox" class="form-check-input" formControlName="otros" id="exampleCheck4">
+                        <label class="form-check-label" for="exampleCheck4">Otros (Marcar para que se muestre en menú lateral 'Otros'')</label> -->
+                        <p-checkbox pTooltip="Marcar para que se muestre en menú lateral 'Otros''" [formControl]="formularioGenerics.controls['otros']" inputId="otros" [binary]="true"></p-checkbox>
+                        <label for="mostrar">Mostrar en Menú 'Otros'</label>
+                    </div>
+                </div>
+            </div>
+            <p-footer>
+
+            </p-footer>
+        </p-panel>
+
+
+
+    </form>
+    <p></p>
+
+    <p-panel>
+        <p-header>
+            <p-toolbar>
+                <div class="ui-toolbar-group-left">
+                    <button pButton type="button" label="Guardar Grupos" icon="pi pi-save" class="ui-button-info" [disabled]="formularioGenerics.invalid " (click)="guardarGrupos()"></button>
+                </div>
+
+                <div class="ui-toolbar-group-right">
+                    <!-- <button pButton type="button" icon="pi pi-search"></button>
+                    <button pButton type="button" icon="pi pi-calendar" class="ui-button-success"></button> -->
+                    <p-message severity="warn" *ngIf="cambiosListaGrupos" text="Recuerda guardar cambios"></p-message>
+                </div>
+            </p-toolbar>
+        </p-header>
+        <!-- <ul *ngFor="let item of grupos">
+                <li> <a [routerLink]="['/grupo/', item.$key]">{{item.title}}</a></li>
+            </ul> -->
+        <p-pickList (onTargetReorder)="cambioListaGrupos($event)" (onMoveToTarget)="cambioListaGrupos($event)" [source]="disponibles" [target]="grupos" sourceHeader="Grupos Disponibles" targetHeader="Actuales" [responsive]="true" filterBy="title" dragdrop="true"
+            sourceFilterPlaceholder="Buscar ..." targetFilterPlaceholder="Buscar ...">
+            <ng-template let-grupos pTemplate="item">
+                <div class="ui-helper-clearfix">
+                    <span style="font-size:14px;float:left;margin:15px 5px 0 0">({{grupos.orden}})</span>
+                    <div style="font-size:14px;float:left;margin:15px 5px 0 0">{{grupos.title}}</div><span style="font-size:14px;float:right;margin:15px 5px 0 0"><a [routerLink]="['/grupo/', grupos.$key]">Ver</a></span>
+                </div>
+            </ng-template>
+        </p-pickList>
+
+        <p-footer>
+
+        </p-footer>
+    </p-panel>
+    <!-- <p-tabPanel header="Grupos" rightIcon="pi pi-list" *ngIf="formularioGenerics.controls['grupo'].value"> -->
+
+    <!-- <h1 class="text-center">Mantenimiento</h1>
+                    <p-pickList [source]="disponibles" [target]="grupos" sourceHeader="Disponibles" targetHeader="Actuales" [responsive]="true" filterBy="title" dragdrop="true" sourceFilterPlaceholder="Buscar ..." targetFilterPlaceholder="Buscar ...">
+                        <ng-template let-grupos pTemplate="item">
+                            <div class="ui-helper-clearfix">
+                                <div style="font-size:14px;float:left;margin:15px 5px 0 0">{{grupos.title}} </div>
+                            </div>
+                        </ng-template>
+                    </p-pickList> -->
+
+    <!-- </p-tabPanel> -->
+
+</div>
+
+
+
+
+<!-- <pre>{{grupos | json}}</pre> -->
+<!-- <pre>{{this.formularioGenerics?.value | json}}</pre> -->

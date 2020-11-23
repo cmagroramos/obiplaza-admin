@@ -1,0 +1,6 @@
+<ng-select [multiple]="permiteSeleccionMultiple" (selected)="onSelectedAlergeno($event)" [ngClass]="'ng-select'" [options]="alergenoOpt" [placeholder]="'Alergenos'">
+
+    <ng-template #optionTemplate let-option="option">
+        <img src="/assets/imgs/alergenos/{{option.value}}.svg" class="icono" /> {{option.value}}
+    </ng-template>
+</ng-select>

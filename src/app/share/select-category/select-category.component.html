@@ -1,0 +1,5 @@
+<ng-select [multiple]="permiteSeleccionMultiple" (selected)="onSelectedCategoria($event)" [ngClass]="'ng-select'" [options]="categoriaOpt" [placeholder]="'Selecciona Categoría'">
+</ng-select>
+<div class="col-sm-2" style="padding-bottom: 5px;" *ngIf="!seleccion">
+    <span class="badge badge-warning"><i class="icofont icofont-warning center"></i> Campo obligatorio</span>
+</div>
